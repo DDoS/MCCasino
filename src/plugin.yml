@@ -1,0 +1,27 @@
+name: MCCasino
+main: me.DDoS.MCCasino.MCCasino
+version: 0.2
+author: DDoS
+depend: [Vault]
+description: A slot machine plugin. 
+commands:
+  mccdel:
+      description: Delete a slot machine.
+      usage:
+          /mccdel (slot machine name)
+          
+  mcctest:
+      description: Test a slot machine.
+      usage:
+          /mcctest (slot machine name)
+          
+  mccforceactive:
+      description: Force a slot machine to become active.
+      usage:
+          /mccforceactive (slot machine name)
+          
+permissions:
+  mccasino.use: 
+    description: use the plugin
+  mccasino.setup: 
+    description: setup slot machines

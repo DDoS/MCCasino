@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.DDoS.MCCasino.bet.MCCBet;
-import me.DDoS.MCCasino.bet.MCCBets;
+import me.DDoS.MCCasino.bet.MCCBetProvider;
 import me.DDoS.MCCasino.util.MCCDropCleaner;
 import me.DDoS.MCCasino.util.MCCUtil;
 import me.DDoS.MCCasino.MCCasino;
@@ -26,17 +26,17 @@ public class MCCSlotMachine {
     private List<Location> reelLocations = new ArrayList<Location>();
     private List<MCCReward> rewards = new ArrayList<MCCReward>();
     private List<Item> itemsToRemove = new ArrayList<Item>();
-    private MCCBets bets;
+    private MCCBetProvider betProvider;
     private boolean active;
     private MCCasino plugin;
 
-    public MCCSlotMachine(List<Location> reelLocations, List<MCCReel> reels, List<MCCReward> rewards, MCCBets betHandler,
+    public MCCSlotMachine(List<Location> reelLocations, List<MCCReel> reels, List<MCCReward> rewards, MCCBetProvider betHandler,
             boolean active, MCCasino plugin) {
 
         this.reels = reels;
         this.reelLocations = reelLocations;
         this.rewards = rewards;
-        this.bets = betHandler;
+        this.betProvider = betHandler;
         this.active = active;
         this.plugin = plugin;
 
@@ -184,7 +184,7 @@ public class MCCSlotMachine {
             
         }
 
-        MCCBet bet = bets.getBet(player.getItemInHand(), player);
+        MCCBet bet = betProvider.getBet(player);
 
         if (bet == null) {
 

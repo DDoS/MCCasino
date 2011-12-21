@@ -1,5 +1,6 @@
 package me.DDoS.MCCasino.bet;
 
+import me.DDoS.MCCasino.MCCasino;
 import me.DDoS.MCCasino.util.MCCUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -16,7 +17,7 @@ public class MCCItemBet implements MCCBet {
     public MCCItemBet(ItemStack item) {
 
         this.item = item;
-
+        MCCasino.log.info("Bet amount: " + item.getAmount());
     }
 
     @Override
@@ -65,8 +66,8 @@ public class MCCItemBet implements MCCBet {
         int total = 0;
         
         for (ItemStack i : items) {
-            
-            total = total + i.getAmount();
+            MCCasino.log.info("Reward amount: " + i.getAmount());
+            total += i.getAmount();
             
         }
         

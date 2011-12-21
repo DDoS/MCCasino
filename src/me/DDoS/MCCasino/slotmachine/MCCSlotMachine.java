@@ -85,20 +85,19 @@ public class MCCSlotMachine {
 
     }
 
-    public synchronized void setActive(boolean active) {
+    public void setActive(boolean active) {
 
         this.active = active;
 
     }
 
-    public synchronized void clearItems() {
+    public void clearItems() {
 
         for (Item item : itemsToRemove) {
 
             item.remove();
 
-        };
-
+        }
     }
 
     public boolean checkItem(Item item1) {
@@ -142,7 +141,7 @@ public class MCCSlotMachine {
 
         }
         
-        plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new MCCDropCleaner(this), 100L);
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new MCCDropCleaner(this), 100L);
         
         return results;
         

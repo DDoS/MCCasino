@@ -1,0 +1,4 @@
+MCCasino is a free open source plugin for Craftbukkit. It allows you to create large customizable slot machines.
+These work based on items, which represent reel values, and signs, which are reels.
+The items are projected from the signs, and fall.
+This allows for a very visual and animated experience.

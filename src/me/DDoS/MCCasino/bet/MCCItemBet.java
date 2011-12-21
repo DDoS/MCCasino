@@ -17,7 +17,7 @@ public class MCCItemBet implements MCCBet {
     public MCCItemBet(ItemStack item) {
 
         this.item = item;
-        MCCasino.log.info("Bet amount: " + item.getAmount());
+        
     }
 
     @Override
@@ -47,26 +47,26 @@ public class MCCItemBet implements MCCBet {
 
         if (oddStack > 0) {
 
-            wonItems[wonItems.length - 1] = new ItemStack(ID, oddStack);
+            wonItems[totalNumberOfStack - 1] = new ItemStack(ID, oddStack);
 
-        }
+        }    
     }
     
     @Override
     public void giveReward(Player player) {
 
+        MCCUtil.tell(player, "You received " + getTotalItems() + " of item '" + wonItems[0].getType().toString().toLowerCase() + "'.");
         player.getInventory().addItem(wonItems);
-        player.updateInventory();
-        MCCUtil.tell(player, "You received " + getTotalItems(wonItems) + " of item '" + wonItems[0].getType().toString().toLowerCase() + "'.");
+        player.updateInventory(); 
         
     }
     
-    private int getTotalItems(ItemStack[] items) {
+    private int getTotalItems() {
 
         int total = 0;
         
-        for (ItemStack i : items) {
-            MCCasino.log.info("Reward amount: " + i.getAmount());
+        for (ItemStack i : wonItems) {
+
             total += i.getAmount();
             
         }

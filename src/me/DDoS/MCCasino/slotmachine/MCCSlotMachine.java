@@ -42,17 +42,22 @@ public class MCCSlotMachine {
 
     }
 
-    public boolean checkReels() {
+    public void checkReels() {
 
-        if (reels.size() > reelLocations.size()) {
+        if (!hasAllOfItsReels()) {
 
             active = false;
-            return false;
+
+        } else {
+
+            active = true;
 
         }
+    }
 
-        active = true;
-        return true;
+    public boolean hasAllOfItsReels() {
+
+        return reels.size() <= reelLocations.size();
 
     }
 
@@ -61,6 +66,7 @@ public class MCCSlotMachine {
         if (!reelLocations.contains(loc)) {
 
             reelLocations.add(loc);
+            checkReels();
             return true;
 
         }
@@ -114,9 +120,9 @@ public class MCCSlotMachine {
         return false;
 
     }
-    
+
     private List<Integer> spinReels() {
-        
+
         itemsToRemove.clear();
         int i = 0;
         List<Integer> results = new ArrayList<Integer>();
@@ -140,22 +146,22 @@ public class MCCSlotMachine {
             i++;
 
         }
-        
+
         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new MCCDropCleaner(this), 100L);
-        
+
         return results;
-        
+
     }
-    
+
     public void testRun(Player player) {
-        
+
         if (!active) {
-            
+
             MCCUtil.tell(player, "This machine is not active.");
             return;
-            
+
         }
-        
+
         active = false;
         List<Integer> results = spinReels();
 
@@ -172,16 +178,16 @@ public class MCCSlotMachine {
         }
 
         MCCUtil.tell(player, "You lost!");
-        
+
     }
 
     public void run(Player player) {
 
         if (!active) {
-            
+
             MCCUtil.tell(player, "This machine is not active.");
             return;
-            
+
         }
 
         MCCBet bet = betProvider.getBet(player);

@@ -81,7 +81,7 @@ public class MCCPlayerListener extends PlayerListener {
 
             }
 
-            if (!machine.checkReels()) {
+            if (!machine.hasAllOfItsReels()) {
 
                 if (machine.addReelLocation(sign.getBlock().getLocation())) {
 

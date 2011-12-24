@@ -1,5 +1,6 @@
 package me.DDoS.MCCasino;
 
+import java.util.Collection;
 import me.DDoS.MCCasino.listener.MCCPlayerListener;
 import me.DDoS.MCCasino.listener.MCCBlockListener;
 import me.DDoS.MCCasino.permissions.MCCPermissions;
@@ -136,9 +137,15 @@ public class MCCasino extends JavaPlugin {
 
     }
 
-    public Set<Entry<String, MCCSlotMachine>> getMachines() {
+    public Set<Entry<String, MCCSlotMachine>> getMachineEntries() {
 
         return machines.entrySet();
+
+    }
+    
+    public  Collection<MCCSlotMachine> getMachines() {
+
+        return machines.values();
 
     }
 

@@ -222,7 +222,7 @@ public class MCCLoader {
 
         Map<String, List<MCCSerializableLocation>> signs = new HashMap<String, List<MCCSerializableLocation>>();
 
-        for (Entry<String, MCCSlotMachine> entry : plugin.getMachines()) {
+        for (Entry<String, MCCSlotMachine> entry : plugin.getMachineEntries()) {
 
             List<Location> locs = entry.getValue().getReels();
             List<MCCSerializableLocation> fLocs = new ArrayList<MCCSerializableLocation>();

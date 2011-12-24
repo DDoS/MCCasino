@@ -1,9 +1,9 @@
 package me.DDoS.MCCasino.listener;
 
+import java.util.Collection;
 import me.DDoS.MCCasino.permissions.MCCPermissions;
 import me.DDoS.MCCasino.util.MCCUtil;
 import me.DDoS.MCCasino.slotmachine.MCCSlotMachine;
-import java.util.Map.Entry;
 import me.DDoS.MCCasino.MCCasino;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -29,77 +29,86 @@ public class MCCPlayerListener extends PlayerListener {
     @Override
     public void onPlayerInteract(PlayerInteractEvent event) {
 
-        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
 
-            if (checkForSign(event.getClickedBlock())) {
+            return;
 
-                Sign sign = (Sign) event.getClickedBlock().getState();
+        }
 
-                if (sign.getLine(0).equalsIgnoreCase("[MCCasino]")) {
+        if (!checkForSign(event.getClickedBlock())) {
 
-                    if (sign.getLine(1).equalsIgnoreCase("Slot Machine")
-                            && MCCasino.permissions.hasPermission(event.getPlayer(), MCCPermissions.USE.getPermissionString())) {
+            return;
 
-                        MCCSlotMachine machine = plugin.getMachine(sign.getLine(2));
+        }
 
-                        if (machine != null) {
+        Sign sign = (Sign) event.getClickedBlock().getState();
 
-                            event.setCancelled(true);
-                            machine.run(event.getPlayer());
-                            return;
+        if (!sign.getLine(0).equalsIgnoreCase("[MCCasino]")) {
 
-                        }
+            return;
 
-                        event.setCancelled(true);
-                        MCCUtil.tell(event.getPlayer(), "This slot machine doesn't exist.");
-                        return;
+        }
 
-                    }
+        event.setCancelled(true);
 
-                    if (sign.getLine(1).equalsIgnoreCase("Reel")
-                            && MCCasino.permissions.hasPermission(event.getPlayer(), MCCPermissions.SETUP.getPermissionString())) {
+        if (sign.getLine(1).equalsIgnoreCase("Slot Machine")
+                && MCCasino.permissions.hasPermission(event.getPlayer(), MCCPermissions.USE.getPermissionString())) {
 
-                        MCCSlotMachine machine = plugin.getMachine(sign.getLine(2));
+            MCCSlotMachine machine = plugin.getMachine(sign.getLine(2));
 
-                        if (machine != null) {
+            if (machine != null) {
 
-                            if (!machine.checkReels()) {
+                machine.run(event.getPlayer());
+                return;
 
-                                boolean success = machine.addReelLocation(sign.getBlock().getLocation());
-                                event.setCancelled(true);
-                                if (success) {
-                                    MCCUtil.tell(event.getPlayer(), "Reel sign added to machine.");
-                                }
-                                if (!success) {
-                                    MCCUtil.tell(event.getPlayer(), "This sign has already been added.");
-                                }
-                                return;
+            } else {
 
-                            }
+                MCCUtil.tell(event.getPlayer(), "This slot machine doesn't exist.");
+                return;
 
-                            event.setCancelled(true);
-                            MCCUtil.tell(event.getPlayer(), "This machine already has all of it signs.");
-                            return;
-
-                        }
-
-                        event.setCancelled(true);
-                        MCCUtil.tell(event.getPlayer(), "This slot machine doesn't exist.");
-                        return;
-
-                    }
-                }
             }
+        }
+
+        if (sign.getLine(1).equalsIgnoreCase("Reel")
+                && MCCasino.permissions.hasPermission(event.getPlayer(), MCCPermissions.SETUP.getPermissionString())) {
+
+            MCCSlotMachine machine = plugin.getMachine(sign.getLine(2));
+
+            if (machine == null) {
+
+                MCCUtil.tell(event.getPlayer(), "This slot machine doesn't exist.");
+                return;
+
+            }
+
+            if (!machine.checkReels()) {
+
+                if (machine.addReelLocation(sign.getBlock().getLocation())) {
+
+                    MCCUtil.tell(event.getPlayer(), "Reel sign added to machine.");
+
+                } else {
+
+                    MCCUtil.tell(event.getPlayer(), "This sign has already been added.");
+
+                }
+
+                return;
+
+            }
+
+            MCCUtil.tell(event.getPlayer(), "This machine already has all of it signs.");
+
         }
     }
 
     @Override
     public void onPlayerPickupItem(PlayerPickupItemEvent event) {
 
-        for (Entry<String, MCCSlotMachine> entry : plugin.getMachines()) {
+        for (MCCSlotMachine machine : plugin.getMachines()) {
 
-            entry.getValue().checkItem(event.getItem());
-            
+            event.setCancelled(machine.checkItem(event.getItem()));
+
         }
     }
 

@@ -22,10 +22,10 @@ import org.bukkit.util.Vector;
  */
 public class MCCSlotMachine {
 
-    private List<MCCReel> reels = new ArrayList<MCCReel>();
-    private List<Location> reelLocations = new ArrayList<Location>();
-    private List<MCCReward> rewards = new ArrayList<MCCReward>();
-    private List<Item> itemsToRemove = new ArrayList<Item>();
+    private List<MCCReel> reels;
+    private List<Location> reelLocations;
+    private List<MCCReward> rewards;
+    private final List<Item> itemsToRemove = new ArrayList<Item>();
     private MCCBetProvider betProvider;
     private boolean active;
     private MCCasino plugin;
@@ -106,7 +106,7 @@ public class MCCSlotMachine {
         }
     }
 
-    public boolean checkItem(Item item1) {
+    public boolean hasItem(Item item1) {
 
         for (Item item2 : itemsToRemove) {
 

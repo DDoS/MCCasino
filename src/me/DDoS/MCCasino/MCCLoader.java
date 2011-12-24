@@ -35,7 +35,7 @@ import org.bukkit.inventory.ItemStack;
 @SuppressWarnings("unchecked")
 public class MCCLoader {
 
-    private Map<String, List<MCCSerializableLocation>> machines = new HashMap<String, List<MCCSerializableLocation>>();
+    private Map<String, List<MCCSerializableLocation>> machines;
 
     public void loadSlotMachines(FileConfiguration config, MCCasino plugin) {
 

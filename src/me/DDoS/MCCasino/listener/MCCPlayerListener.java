@@ -1,6 +1,5 @@
 package me.DDoS.MCCasino.listener;
 
-import java.util.Collection;
 import me.DDoS.MCCasino.permissions.MCCPermissions;
 import me.DDoS.MCCasino.util.MCCUtil;
 import me.DDoS.MCCasino.slotmachine.MCCSlotMachine;
@@ -20,9 +19,9 @@ public class MCCPlayerListener extends PlayerListener {
 
     private MCCasino plugin;
 
-    public MCCPlayerListener(MCCasino instance) {
+    public MCCPlayerListener(MCCasino plugin) {
 
-        plugin = instance;
+        this.plugin = plugin;
 
     }
 
@@ -107,8 +106,12 @@ public class MCCPlayerListener extends PlayerListener {
 
         for (MCCSlotMachine machine : plugin.getMachines()) {
 
-            event.setCancelled(machine.checkItem(event.getItem()));
+            if (machine.hasItem(event.getItem())) {
 
+                event.setCancelled(true);
+                return;
+
+            }
         }
     }
 

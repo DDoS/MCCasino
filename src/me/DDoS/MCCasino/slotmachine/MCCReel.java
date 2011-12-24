@@ -1,6 +1,5 @@
 package me.DDoS.MCCasino.slotmachine;
 
-import me.DDoS.MCCasino.slotmachine.MCCReelValue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -12,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
  */
 public class MCCReel {
     
-    private List<MCCReelValue> values = new ArrayList<MCCReelValue>();
+    private List<MCCReelValue> values;
     
     public MCCReel(List<MCCReelValue> values) {
         
@@ -22,7 +21,7 @@ public class MCCReel {
     
     public ItemStack getRandomItem() {
         
-        List<Integer> weightedNumbers = new ArrayList<Integer>();
+        final List<Integer> weightedNumbers = new ArrayList<Integer>();
         Random random = new Random();
         
         for (MCCReelValue value : values) {

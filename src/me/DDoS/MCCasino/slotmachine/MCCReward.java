@@ -1,6 +1,5 @@
 package me.DDoS.MCCasino.slotmachine;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,7 +8,7 @@ import java.util.List;
  */
 public class MCCReward {
     
-    private List<Integer> results = new ArrayList<Integer>();
+    private List<Integer> results;
     private int multiplier;
     
     public MCCReward(List<Integer> results, int multiplier) {
@@ -27,7 +26,7 @@ public class MCCReward {
             
             int i2 = this.results.get(i);
             
-            if (this.results.get(i) == -1) {
+            if (i2 == -1) {
                 
                 i++;
                 continue;

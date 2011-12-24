@@ -2,7 +2,6 @@ package me.DDoS.MCCasino.bet;
 
 import me.DDoS.MCCasino.util.MCCUtil;
 import me.DDoS.MCCasino.MCCasino;
-import me.DDoS.MCCasino.bet.MCCBet;
 import org.bukkit.entity.Player;
 
 /**

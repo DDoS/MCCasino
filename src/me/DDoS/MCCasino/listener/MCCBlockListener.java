@@ -16,9 +16,9 @@ public class MCCBlockListener extends BlockListener {
 
     private MCCasino plugin;
 
-    public MCCBlockListener(MCCasino instance) {
+    public MCCBlockListener(MCCasino plugin) {
 
-        plugin = instance;
+        this.plugin = plugin;
 
     }
 

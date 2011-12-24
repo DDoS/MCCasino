@@ -1,6 +1,7 @@
 package me.DDoS.MCCasino.slotmachine;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import me.DDoS.MCCasino.bet.MCCBet;
@@ -42,7 +43,7 @@ public class MCCSlotMachine {
 
     }
 
-    public void checkReels() {
+    private void checkReels() {
 
         if (!hasAllOfItsReels()) {
 
@@ -50,6 +51,7 @@ public class MCCSlotMachine {
 
         } else {
 
+            orderReels();
             active = true;
 
         }
@@ -221,11 +223,9 @@ public class MCCSlotMachine {
 
     private byte getDataFromSign(Location loc) {
 
-        Block block = loc.getBlock();
+        if (checkForSign(loc)) {
 
-        if (checkForSign(block)) {
-
-            return ((Sign) block.getState()).getData().getData();
+            return ((Sign) loc.getBlock().getState()).getData().getData();
 
         }
 
@@ -279,9 +279,9 @@ public class MCCSlotMachine {
         }
     }
 
-    private boolean checkForSign(Block block) {
+    private boolean checkForSign(Location loc) {
 
-        switch (block.getType()) {
+        switch (loc.getBlock().getType()) {
 
             case WALL_SIGN:
                 return true;
@@ -290,5 +290,61 @@ public class MCCSlotMachine {
                 return false;
 
         }
+    }
+    
+    private void orderReels() {
+        
+        final Location[] tl = new Location[reels.size()];
+        
+        for (Location rl : reelLocations) {
+            
+            if (!checkForSign(rl)) {
+                
+                return;
+                
+            }
+            
+            Sign sign = (Sign) rl.getBlock().getState();
+            
+            if (!isInt(sign.getLine(3))) {
+                
+                return;
+                
+            }
+            
+            int i = (Integer.parseInt(sign.getLine(3)) - 1);
+            
+            if (i < 0 || i > (tl.length - 1)) {
+                
+                return;
+                
+            }
+            
+            if (tl[i] != null) {
+                
+                return;
+                
+            }
+            
+            tl[i] = rl;
+            
+        }
+
+        reelLocations = Arrays.asList(tl);
+        
+    }
+    
+    private boolean isInt(String s) {
+        
+        try {
+            
+            Integer.parseInt(s);
+            return true;
+            
+        } catch (NumberFormatException ex) {
+            
+            return false;
+            
+        }   
     }
 }

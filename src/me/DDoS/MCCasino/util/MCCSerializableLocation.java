@@ -12,7 +12,7 @@ import org.bukkit.World;
  */
 public class MCCSerializableLocation implements Serializable {
     
-    private static final long serialVersionUID = 845331563645346L;
+    private static final long serialVersionUID = -1330836964180902739L;
     //
     private double x;
     private double y;

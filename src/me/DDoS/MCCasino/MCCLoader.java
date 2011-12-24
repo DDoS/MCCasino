@@ -9,7 +9,6 @@ import me.DDoS.MCCasino.slotmachine.MCCSlotMachine;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
@@ -24,7 +23,6 @@ import me.DDoS.MCCasino.bet.MCCItemBetProvider;
 import me.DDoS.MCCasino.bet.MCCMoneyBetProvider;
 import org.bukkit.Location;
 import org.bukkit.Server;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
@@ -45,14 +43,11 @@ public class MCCLoader {
 
             config.load("plugins/MCCasino/config.yml");
 
-        } catch (IOException ex) {
+        } catch (Exception e) {
 
-            MCCasino.log.info("[MCCasino] Couldn't load the config: " + ex.getMessage());
-
-        } catch (InvalidConfigurationException ex) {
-
-            MCCasino.log.info("[MCCasino] Couldn't load the config: " + ex.getMessage());
-
+            MCCasino.log.info("[MCCasino] Couldn't load the config.");
+            MCCasino.log.info("[MCCasino] Error: " + e.getMessage());
+            
         }
 
         Set<String> machineNames = config.getConfigurationSection("Machines").getKeys(false);
@@ -173,6 +168,7 @@ public class MCCLoader {
         } catch (Exception e) {
 
             MCCasino.log.info("[MCCasino] Couldn't load the slot machine file.");
+            MCCasino.log.info("[MCCasino] Error: " + e.getMessage());
             machines = new HashMap<String, List<MCCSerializableLocation>>();
 
         }
@@ -211,9 +207,11 @@ public class MCCLoader {
 
                 dipensersFile.createNewFile();
 
-            } catch (Exception e2) {
+            } catch (Exception e) {
 
-                MCCasino.log.info("[MCCasino] Error when creating slot machine file.");
+                MCCasino.log.info("[MCCasino] Couldn't create the slot machine file.");
+                MCCasino.log.info("[MCCasino] Error: " + e.getMessage());
+                
             }
         }
     }
@@ -247,7 +245,8 @@ public class MCCLoader {
 
         } catch (Exception e) {
 
-            MCCasino.log.info("[MCCasino] Error when saving slot machines.");
+            MCCasino.log.info("[MCCasino] Couldn't save the slot machine file.");
+            MCCasino.log.info("[MCCasino] Error: " + e.getMessage());
 
         }
     }

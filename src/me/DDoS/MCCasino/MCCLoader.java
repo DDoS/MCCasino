@@ -21,10 +21,11 @@ import java.util.Set;
 
 import me.DDoS.MCCasino.bet.MCCItemBetProvider;
 import me.DDoS.MCCasino.bet.MCCMoneyBetProvider;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Location;
-import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.RegisteredServiceProvider;
 
 /**
  *
@@ -34,8 +35,23 @@ import org.bukkit.inventory.ItemStack;
 public class MCCLoader {
 
     private Map<String, List<MCCSerializableLocation>> machines;
+    private MCCasino plugin;
+    private FileConfiguration config;
+    
+    public MCCLoader(MCCasino plugin, FileConfiguration config) {
+        
+        this.plugin = plugin;
+        this.config = config;
+        
+    }
+    
+    public MCCLoader(MCCasino plugin) {
+        
+        this.plugin = plugin;
+        
+    }
 
-    public void loadSlotMachines(FileConfiguration config, MCCasino plugin) {
+    public void loadSlotMachines() {
 
         loadSlotMachinesFile();
 
@@ -54,10 +70,10 @@ public class MCCLoader {
 
         for (String machineName : machineNames) {
 
-            List<Location> signs = getMachineSigns(machineName, plugin.getServer());
-            List<MCCReel> reels = loadReels(config, machineName);
-            List<MCCReward> rewards = loadRewards(config, machineName);
-            MCCBetProvider betHandler = loadBetProvider(config, machineName);
+            List<Location> signs = getMachineSigns(machineName);
+            List<MCCReel> reels = loadReels(machineName);
+            List<MCCReward> rewards = loadRewards(machineName);
+            MCCBetProvider betHandler = loadBetProvider(machineName);
 
             boolean active = true;
 
@@ -73,7 +89,7 @@ public class MCCLoader {
         }
     }
 
-    public List<MCCReel> loadReels(FileConfiguration config, String machineName) {
+    public List<MCCReel> loadReels(String machineName) {
 
         int numOfReels = config.getConfigurationSection("Machines." + machineName + ".reels").getKeys(false).size();
         List<MCCReel> reels = new ArrayList<MCCReel>();
@@ -101,7 +117,7 @@ public class MCCLoader {
 
     }
 
-    private List<MCCReward> loadRewards(FileConfiguration config, String machineName) {
+    private List<MCCReward> loadRewards(String machineName) {
 
         List<String> rewards = config.getList("Machines." + machineName + ".rewards");
         List<MCCReward> rewardsList = new ArrayList<MCCReward>();
@@ -128,11 +144,13 @@ public class MCCLoader {
 
     }
 
-    private MCCBetProvider loadBetProvider(FileConfiguration config, String machineName) {
+    private MCCBetProvider loadBetProvider(String machineName) {
 
-        if (config.getBoolean("Machines." + machineName + ".economy.use_economy") && MCCasino.economy != null) {
-
-            return new MCCMoneyBetProvider(config.getInt("Machines." + machineName + ".economy.cost"));
+        if (config.getBoolean("Machines." + machineName + ".economy.use_economy") && plugin.hasEconomy()) {
+            
+            RegisteredServiceProvider<Economy> economyProvider =
+                    plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+            return new MCCMoneyBetProvider(config.getInt("Machines." + machineName + ".economy.cost"), economyProvider.getProvider());
 
         } else {
 
@@ -174,7 +192,7 @@ public class MCCLoader {
         }
     }
 
-    private List<Location> getMachineSigns(String machineName, Server server) {
+    private List<Location> getMachineSigns(String machineName) {
 
         List<MCCSerializableLocation> sLocs = machines.get(machineName);
 
@@ -188,7 +206,7 @@ public class MCCLoader {
 
         for (MCCSerializableLocation sLoc : sLocs) {
 
-            Location location = sLoc.getLocation(server);
+            Location location = sLoc.getLocation(plugin.getServer());
             locs.add(location);
 
         }
@@ -216,7 +234,7 @@ public class MCCLoader {
         }
     }
 
-    public void saveMachines(MCCasino plugin) {
+    public void saveMachines() {
 
         Map<String, List<MCCSerializableLocation>> signs = new HashMap<String, List<MCCSerializableLocation>>();
 

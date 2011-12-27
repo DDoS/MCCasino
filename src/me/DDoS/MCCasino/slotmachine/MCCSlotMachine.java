@@ -139,7 +139,7 @@ public class MCCSlotMachine {
         }
 
         if (itemsInChunk(chunk)) {
-            MCCasino.log.info("fefesfs");
+
             clearItems();
             
         }      

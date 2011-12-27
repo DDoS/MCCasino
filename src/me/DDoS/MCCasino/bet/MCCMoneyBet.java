@@ -1,7 +1,7 @@
 package me.DDoS.MCCasino.bet;
 
 import me.DDoS.MCCasino.util.MCCUtil;
-import me.DDoS.MCCasino.MCCasino;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 
 /**
@@ -11,10 +11,12 @@ import org.bukkit.entity.Player;
 public class MCCMoneyBet implements MCCBet {
 
     private int amount;
+    private Economy economy;
 
-    public MCCMoneyBet(int amount) {
+    public MCCMoneyBet(int amount, Economy economy) {
 
         this.amount = amount;
+        this.economy = economy;
 
     }
 
@@ -29,7 +31,7 @@ public class MCCMoneyBet implements MCCBet {
     @Override
     public void giveReward(Player player) {
 
-        MCCasino.economy.depositPlayer(player.getName(), amount);
+        economy.depositPlayer(player.getName(), amount);
         MCCUtil.tell(player, "You won " + amount + " dollar(s). The amount has been deposited in your account.");
         return;
 

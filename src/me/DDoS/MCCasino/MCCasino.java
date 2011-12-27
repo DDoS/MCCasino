@@ -15,7 +15,6 @@ import me.DDoS.MCCasino.util.MCCUtil;
 import me.DDoS.MCCasino.slotmachine.MCCSlotMachine;
 import me.DDoS.MCCasino.permissions.Permissions;
 import me.DDoS.MCCasino.permissions.PermissionsHandler;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -23,7 +22,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -41,8 +39,6 @@ public class MCCasino extends JavaPlugin {
     private final MCCWorldListener worldListener = new MCCWorldListener(this);
     //
     public static Permissions permissions;
-    //
-    public static Economy economy;
 
     @Override
     public void onEnable() {
@@ -53,8 +49,7 @@ public class MCCasino extends JavaPlugin {
         pm.registerEvent(Type.CHUNK_UNLOAD, worldListener, Priority.Monitor, this);
 
         permissions = new PermissionsHandler(this).getPermissions();
-        linkVaultEconomy();
-        new MCCLoader().loadSlotMachines(getConfig(), this);
+        new MCCLoader(this, getConfig()).loadSlotMachines();
 
         log.info("[MCCasino] Plugin enabled, v0.2, by DDoS.");
 
@@ -69,7 +64,7 @@ public class MCCasino extends JavaPlugin {
 
         }
 
-        new MCCLoader().saveMachines(this);
+        new MCCLoader(this).saveMachines();
         log.info("[MCCasino] Plugin disabled, v0.2, by DDoS.");
 
     }
@@ -92,11 +87,11 @@ public class MCCasino extends JavaPlugin {
             return true;
 
         }
-        
+
         if (args.length != 1) {
-            
+
             return false;
-            
+
         }
 
         if (!machines.containsKey(args[0])) {
@@ -146,8 +141,8 @@ public class MCCasino extends JavaPlugin {
         return machines.entrySet();
 
     }
-    
-    public  Collection<MCCSlotMachine> getMachines() {
+
+    public Collection<MCCSlotMachine> getMachines() {
 
         return machines.values();
 
@@ -162,19 +157,9 @@ public class MCCasino extends JavaPlugin {
         }
     }
 
-    private void linkVaultEconomy() {
+    public boolean hasEconomy() {
 
-        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        return getServer().getPluginManager().getPlugin("Vault") != null;
 
-        if (economyProvider != null) {
-
-            economy = economyProvider.getProvider();
-            return;
-
-        } else {
-
-            log.info("[MCCasino] Couldn't connect to Vault. Eonomy not available.");
-
-        }
     }
 }

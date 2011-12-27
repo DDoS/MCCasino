@@ -9,6 +9,7 @@ import me.DDoS.MCCasino.bet.MCCBetProvider;
 import me.DDoS.MCCasino.util.MCCDropCleaner;
 import me.DDoS.MCCasino.util.MCCUtil;
 import me.DDoS.MCCasino.MCCasino;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Item;
@@ -85,9 +86,9 @@ public class MCCSlotMachine {
             return true;
 
         }
-        
+
         return false;
-        
+
     }
 
     public List<Location> getReels() {
@@ -109,6 +110,9 @@ public class MCCSlotMachine {
             item.remove();
 
         }
+        
+        itemsToRemove.clear();
+        
     }
 
     public boolean hasItem(Item item1) {
@@ -126,9 +130,42 @@ public class MCCSlotMachine {
 
     }
 
+    public void passChunkUnload(Chunk chunk) {
+
+        if (itemsToRemove.isEmpty()) {
+
+            return;
+
+        }
+
+        if (itemsInChunk(chunk)) {
+            MCCasino.log.info("fefesfs");
+            clearItems();
+            
+        }      
+    }
+
+    private boolean itemsInChunk(Chunk chunk) {
+
+        for (Item item : itemsToRemove) {
+
+            Location loc = item.getLocation();
+            int x = loc.getBlockX() >> 4;
+            int z = loc.getBlockZ() >> 4;
+
+            if (x == chunk.getX() && z == chunk.getZ()) {
+
+                return true;
+
+            }
+        }
+
+        return false;
+
+    }
+
     private List<Integer> spinReels() {
 
-        itemsToRemove.clear();
         int i = 0;
         List<Integer> results = new ArrayList<Integer>();
 
@@ -294,60 +331,60 @@ public class MCCSlotMachine {
 
         }
     }
-    
+
     private void orderReels() {
-        
+
         final Location[] tl = new Location[reels.size()];
-        
+
         for (Location rl : reelLocations) {
-            
+
             if (!checkForSign(rl)) {
-                
+
                 return;
-                
+
             }
-            
+
             Sign sign = (Sign) rl.getBlock().getState();
-            
+
             if (!isInt(sign.getLine(3))) {
-                
+
                 return;
-                
+
             }
-            
+
             int i = (Integer.parseInt(sign.getLine(3)) - 1);
-            
+
             if (i < 0 || i > (tl.length - 1)) {
-                
+
                 return;
-                
+
             }
-            
+
             if (tl[i] != null) {
-                
+
                 return;
-                
+
             }
-            
+
             tl[i] = rl;
-            
+
         }
 
         reelLocations = Arrays.asList(tl);
-        
+
     }
-    
+
     private boolean isInt(String s) {
-        
+
         try {
-            
+
             Integer.parseInt(s);
             return true;
-            
+
         } catch (NumberFormatException ex) {
-            
+
             return false;
-            
-        }   
+
+        }
     }
 }

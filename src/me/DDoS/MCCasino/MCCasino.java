@@ -1,17 +1,18 @@
 package me.DDoS.MCCasino;
 
 import java.util.Collection;
-import me.DDoS.MCCasino.listener.MCCPlayerListener;
-import me.DDoS.MCCasino.listener.MCCBlockListener;
-import me.DDoS.MCCasino.permissions.MCCPermissions;
-import me.DDoS.MCCasino.util.MCCUtil;
-import me.DDoS.MCCasino.slotmachine.MCCSlotMachine;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import me.DDoS.MCCasino.listener.MCCPlayerListener;
+import me.DDoS.MCCasino.listener.MCCBlockListener;
+import me.DDoS.MCCasino.listener.MCCWorldListener;
+import me.DDoS.MCCasino.permissions.MCCPermissions;
+import me.DDoS.MCCasino.util.MCCUtil;
+import me.DDoS.MCCasino.slotmachine.MCCSlotMachine;
 import me.DDoS.MCCasino.permissions.Permissions;
 import me.DDoS.MCCasino.permissions.PermissionsHandler;
 import net.milkbowl.vault.economy.Economy;
@@ -21,6 +22,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -36,6 +38,7 @@ public class MCCasino extends JavaPlugin {
     //
     private final MCCPlayerListener playerListener = new MCCPlayerListener(this);
     private final MCCBlockListener blockListener = new MCCBlockListener(this);
+    private final MCCWorldListener worldListener = new MCCWorldListener(this);
     //
     public static Permissions permissions;
     //
@@ -44,8 +47,10 @@ public class MCCasino extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        getServer().getPluginManager().registerEvent(Type.PLAYER_INTERACT, playerListener, Priority.Normal, this);
-        getServer().getPluginManager().registerEvent(Type.BLOCK_BREAK, blockListener, Priority.Normal, this);
+        PluginManager pm = getServer().getPluginManager();
+        pm.registerEvent(Type.PLAYER_INTERACT, playerListener, Priority.Normal, this);
+        pm.registerEvent(Type.BLOCK_BREAK, blockListener, Priority.Monitor, this);
+        pm.registerEvent(Type.CHUNK_UNLOAD, worldListener, Priority.Monitor, this);
 
         permissions = new PermissionsHandler(this).getPermissions();
         linkVaultEconomy();

@@ -5,12 +5,10 @@ import me.DDoS.MCCasino.util.MCCUtil;
 import me.DDoS.MCCasino.slotmachine.MCCSlotMachine;
 import me.DDoS.MCCasino.MCCasino;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 
 /**
  *

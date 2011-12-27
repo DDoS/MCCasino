@@ -86,7 +86,7 @@ public class MCCLoader {
             for (String reelValue : reelValues) {
 
                 String[] values = reelValue.split("-");
-                rvs.add(new MCCReelValue(new ItemStack(Integer.parseInt(values[0]), 1), Integer.parseInt(values[1])));
+                rvs.add(new MCCReelValue(new ItemStack(Integer.parseInt(values[0]), 0), Integer.parseInt(values[1])));
 
             }
 

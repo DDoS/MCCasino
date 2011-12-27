@@ -4,6 +4,7 @@ import me.DDoS.MCCasino.permissions.MCCPermissions;
 import me.DDoS.MCCasino.util.MCCUtil;
 import me.DDoS.MCCasino.slotmachine.MCCSlotMachine;
 import me.DDoS.MCCasino.MCCasino;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.event.block.Action;
@@ -34,7 +35,7 @@ public class MCCPlayerListener extends PlayerListener {
 
         }
 
-        if (!checkForSign(event.getClickedBlock())) {
+        if (event.getClickedBlock().getType() != Material.WALL_SIGN) {
 
             return;
 
@@ -97,33 +98,6 @@ public class MCCPlayerListener extends PlayerListener {
             }
 
             MCCUtil.tell(event.getPlayer(), "This machine already has all of it signs.");
-
-        }
-    }
-
-    @Override
-    public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-
-        for (MCCSlotMachine machine : plugin.getMachines()) {
-
-            if (machine.hasItem(event.getItem())) {
-
-                event.setCancelled(true);
-                return;
-
-            }
-        }
-    }
-
-    private boolean checkForSign(Block block) {
-
-        switch (block.getType()) {
-
-            case WALL_SIGN:
-                return true;
-
-            default:
-                return false;
 
         }
     }

@@ -76,14 +76,18 @@ public class MCCSlotMachine {
 
     }
 
-    public void removeReelLocation(Location loc) {
+    public boolean removeReelLocation(Location loc) {
 
         if (reelLocations.contains(loc)) {
 
             reelLocations.remove(loc);
             checkReels();
+            return true;
 
         }
+        
+        return false;
+        
     }
 
     public List<Location> getReels() {

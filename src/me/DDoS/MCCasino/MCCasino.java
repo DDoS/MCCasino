@@ -46,7 +46,6 @@ public class MCCasino extends JavaPlugin {
 
         getServer().getPluginManager().registerEvent(Type.PLAYER_INTERACT, playerListener, Priority.Normal, this);
         getServer().getPluginManager().registerEvent(Type.BLOCK_BREAK, blockListener, Priority.Normal, this);
-        getServer().getPluginManager().registerEvent(Type.PLAYER_PICKUP_ITEM, playerListener, Priority.Normal, this);
 
         permissions = new PermissionsHandler(this).getPermissions();
         linkVaultEconomy();

@@ -35,7 +35,6 @@ public class MCCItemBetProvider implements MCCBetProvider {
         if (bet.getType().equals(Material.DIAMOND_SWORD) || bet.getType().equals(Material.IRON_SWORD) || bet.getType().equals(Material.STONE_SWORD)
                 || bet.getType().equals(Material.GOLD_SWORD) || bet.getType().equals(Material.WOOD_SWORD)) {
 
-            MCCUtil.tell(player, "Weapons are not accepted.");
             return null;
 
         }

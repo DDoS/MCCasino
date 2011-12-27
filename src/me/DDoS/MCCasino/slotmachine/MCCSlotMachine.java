@@ -10,7 +10,6 @@ import me.DDoS.MCCasino.util.MCCDropCleaner;
 import me.DDoS.MCCasino.util.MCCUtil;
 import me.DDoS.MCCasino.MCCasino;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;

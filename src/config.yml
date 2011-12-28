@@ -64,10 +64,10 @@ Machines:
     - 5,5,5,5,5:10
     - X,X,5,X,X:10
     economy:
-      use_economy: true
+      use_economy: false
       cost: 10
     bet_limits:
-      enabled: false
+      enabled: true
       allowed:
       - 266-1
       - 264-1

@@ -115,21 +115,6 @@ public class MCCSlotMachine {
         
     }
 
-    public boolean hasItem(Item item1) {
-
-        for (Item item2 : itemsToRemove) {
-
-            if (item1.getEntityId() == item2.getEntityId()) {
-
-                return true;
-
-            }
-        }
-
-        return false;
-
-    }
-
     public void passChunkUnload(Chunk chunk) {
 
         if (itemsToRemove.isEmpty()) {

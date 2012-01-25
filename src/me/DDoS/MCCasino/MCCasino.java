@@ -7,8 +7,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import me.DDoS.MCCasino.listener.MCCPlayerListener;
-import me.DDoS.MCCasino.listener.MCCBlockListener;
+import me.DDoS.MCCasino.listener.MCCListener;
 import me.DDoS.MCCasino.permissions.MCCPermissions;
 import me.DDoS.MCCasino.util.MCCUtil;
 import me.DDoS.MCCasino.slotmachine.MCCSlotMachine;
@@ -18,7 +17,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -36,9 +34,7 @@ public class MCCasino extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        PluginManager pm = getServer().getPluginManager();
-        pm.registerEvents(new MCCPlayerListener(this), this);
-        pm.registerEvents(new MCCBlockListener(this), this);
+        getServer().getPluginManager().registerEvents(new MCCListener(this), this);
 
         permissions = new PermissionsHandler(this).getPermissions();
         new MCCLoader(this, getConfig()).loadSlotMachines();

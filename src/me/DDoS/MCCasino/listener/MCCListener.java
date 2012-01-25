@@ -1,31 +1,33 @@
 package me.DDoS.MCCasino.listener;
 
+import me.DDoS.MCCasino.MCCasino;
 import me.DDoS.MCCasino.permissions.MCCPermissions;
 import me.DDoS.MCCasino.util.MCCUtil;
 import me.DDoS.MCCasino.slotmachine.MCCSlotMachine;
-import me.DDoS.MCCasino.MCCasino;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 
 /**
  *
  * @author DDoS
  */
-public class MCCPlayerListener implements Listener {
+public class MCCListener implements Listener {
 
     private MCCasino plugin;
 
-    public MCCPlayerListener(MCCasino plugin) {
+    public MCCListener(MCCasino plugin) {
 
         this.plugin = plugin;
 
     }
-
+    
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerInteract(PlayerInteractEvent event) {
 
@@ -98,6 +100,48 @@ public class MCCPlayerListener implements Listener {
             }
 
             MCCUtil.tell(event.getPlayer(), "This machine already has all of it signs.");
+
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onBlockBreak(BlockBreakEvent event) {
+
+        if (event.getBlock().getType() != Material.WALL_SIGN) {
+
+            return;
+
+        }
+
+        Sign sign = (Sign) event.getBlock().getState();
+
+        if (!sign.getLine(0).equalsIgnoreCase("[MCCasino]") || !sign.getLine(1).equalsIgnoreCase("Reel")) {
+
+            return;
+
+        }
+
+        MCCSlotMachine machine = plugin.getMachine(sign.getLine(2));
+
+        if (machine == null) {
+
+            return;
+
+        }
+
+        if (machine.removeReelLocation(sign.getBlock().getLocation())) {
+
+            MCCUtil.tell(event.getPlayer(), "Reel removed.");
+
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onChunkUnload(ChunkUnloadEvent event) {
+
+        for (MCCSlotMachine machine : plugin.getMachines()) {
+
+            machine.passChunkUnload(event.getChunk());
 
         }
     }

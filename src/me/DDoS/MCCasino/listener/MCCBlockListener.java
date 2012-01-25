@@ -5,14 +5,17 @@ import me.DDoS.MCCasino.util.MCCUtil;
 import me.DDoS.MCCasino.slotmachine.MCCSlotMachine;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockListener;
+import org.bukkit.event.world.ChunkUnloadEvent;
 
 /**
  *
  * @author DDoS
  */
-public class MCCBlockListener extends BlockListener {
+public class MCCBlockListener implements Listener {
 
     private MCCasino plugin;
 
@@ -22,7 +25,7 @@ public class MCCBlockListener extends BlockListener {
 
     }
 
-    @Override
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockBreak(BlockBreakEvent event) {
 
         if (event.getBlock().getType() != Material.WALL_SIGN) {
@@ -53,5 +56,14 @@ public class MCCBlockListener extends BlockListener {
 
         }
     }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onChunkUnload(ChunkUnloadEvent event) {
+
+        for (MCCSlotMachine machine : plugin.getMachines()) {
+
+            machine.passChunkUnload(event.getChunk());
+
+        }
+    }
 }
-    

@@ -96,7 +96,7 @@ public class MCCLoader {
 
         for (int i2 = 0; i2 < numOfReels; i2++) {
 
-            List<String> reelValues = config.getList("Machines." + machineName + ".reels." + (i2 + 1));
+            List<String> reelValues = config.getStringList("Machines." + machineName + ".reels." + (i2 + 1));
             List<MCCReelValue> rvs = new ArrayList<MCCReelValue>();
 
             for (String reelValue : reelValues) {
@@ -119,7 +119,7 @@ public class MCCLoader {
 
     private List<MCCReward> loadRewards(String machineName) {
 
-        List<String> rewards = config.getList("Machines." + machineName + ".rewards");
+        List<String> rewards = config.getStringList("Machines." + machineName + ".rewards");
         List<MCCReward> rewardsList = new ArrayList<MCCReward>();
 
         for (String reward : rewards) {
@@ -158,7 +158,7 @@ public class MCCLoader {
             
             if (config.getBoolean("Machines." + machineName + ".bet_limits.enabled")) {
 
-                List<String> limits = config.getList("Machines." + machineName + ".bet_limits.allowed");
+                List<String> limits = config.getStringList("Machines." + machineName + ".bet_limits.allowed");
 
                 for (String limit : limits) {
 

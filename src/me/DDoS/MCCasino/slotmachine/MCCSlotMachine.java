@@ -123,14 +123,35 @@ public class MCCSlotMachine {
 
         }
 
-        if (itemsInChunk(chunk)) {
+        if (areItemsInChunk(chunk)) {
 
             clearItems();
             
         }      
     }
+    
+    public boolean hasItem(Item item) {
+        
+        if (itemsToRemove.isEmpty()) {
 
-    private boolean itemsInChunk(Chunk chunk) {
+            return false;
+
+        }
+        
+        for (Item item2 : itemsToRemove) {
+            
+            if (item2.equals(item)) {
+                
+                return true;
+                
+            }        
+        }
+        
+        return false;
+        
+    }
+
+    private boolean areItemsInChunk(Chunk chunk) {
 
         for (Item item : itemsToRemove) {
 

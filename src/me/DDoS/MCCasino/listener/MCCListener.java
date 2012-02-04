@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 
 /**
@@ -104,6 +105,20 @@ public class MCCListener implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onPlayerPickupItem(PlayerPickupItemEvent event) {
+        
+        for (MCCSlotMachine machine : plugin.getMachines()) {
+
+            if (machine.hasItem(event.getItem())) {
+                
+                event.setCancelled(true);
+                return;
+                
+            }
+        }        
+    }
+    
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockBreak(BlockBreakEvent event) {
 

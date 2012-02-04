@@ -73,7 +73,7 @@ public class MCCItemBetProvider implements MCCBetProvider {
 
             }
 
-            player.getInventory().remove(limit);
+            player.getInventory().removeItem(limit);
             player.updateInventory();
             return new MCCItemBet(limit);
 

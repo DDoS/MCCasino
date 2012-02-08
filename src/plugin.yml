@@ -1,6 +1,6 @@
 name: MCCasino
 main: me.DDoS.MCCasino.MCCasino
-version: 0.2
+version: 0.2.1
 author: DDoS
 softdepend: [Vault]
 description: A slot machine plugin. 

@@ -39,7 +39,7 @@ public class MCCasino extends JavaPlugin {
         permissions = new PermissionsHandler(this).getPermissions();
         new MCCLoader(this, getConfig()).loadSlotMachines();
 
-        log.info("[MCCasino] Plugin enabled, v0.2, by DDoS.");
+        log.info("[MCCasino] Plugin enabled, v" + getDescription().getVersion() + ", by DDoS.");
 
     }
 
@@ -53,7 +53,7 @@ public class MCCasino extends JavaPlugin {
         }
 
         new MCCLoader(this).saveMachines();
-        log.info("[MCCasino] Plugin disabled, v0.2, by DDoS.");
+        log.info("[MCCasino] Plugin disabled, v" + getDescription().getVersion() + ", by DDoS.");
 
     }
 

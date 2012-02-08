@@ -148,9 +148,8 @@ public class MCCLoader {
 
         if (config.getBoolean("Machines." + machineName + ".economy.use_economy") && plugin.hasEconomy()) {
             
-            RegisteredServiceProvider<Economy> economyProvider =
-                    plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-            return new MCCMoneyBetProvider(config.getInt("Machines." + machineName + ".economy.cost"), economyProvider.getProvider());
+            return new MCCMoneyBetProvider(config.getInt("Machines." + machineName + ".economy.cost"),
+                    plugin.getServer().getServicesManager().getRegistration(Economy.class).getProvider());
 
         } else {
 

@@ -28,7 +28,7 @@ public class MCCMoneyBetProvider implements MCCBetProvider {
 
         if (result.transactionSuccess()) {
 
-            MCCUtil.tell(player, "Bet accepted. " + cost + " dollar(s) have been withdrawed from your account.");
+            MCCUtil.tell(player, "Bet accepted. " + cost + " dollar(s) have been withdrawned from your account.");
             return new MCCMoneyBet(cost, economy);
 
         }

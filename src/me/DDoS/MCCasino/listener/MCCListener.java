@@ -55,7 +55,7 @@ public class MCCListener implements Listener {
         event.setCancelled(true);
 
         if (sign.getLine(1).equalsIgnoreCase("Slot Machine")
-                && MCCasino.permissions.hasPermission(event.getPlayer(), Permission.USE.getPermissionString())) {
+                && plugin.getPermissions().hasPermission(event.getPlayer(), Permission.USE.getPermissionString())) {
 
             SlotMachine machine = plugin.getMachine(sign.getLine(2));
 
@@ -73,7 +73,7 @@ public class MCCListener implements Listener {
         }
 
         if (sign.getLine(1).equalsIgnoreCase("Reel")
-                && MCCasino.permissions.hasPermission(event.getPlayer(), Permission.SETUP.getPermissionString())) {
+                && plugin.getPermissions().hasPermission(event.getPlayer(), Permission.SETUP.getPermissionString())) {
 
             SlotMachine machine = plugin.getMachine(sign.getLine(2));
 

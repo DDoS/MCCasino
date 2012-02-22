@@ -29,7 +29,7 @@ public class MCCasino extends JavaPlugin {
     //
     private final Map<String, SlotMachine> machines = new HashMap<String, SlotMachine>();
     //
-    public static Permissions permissions;
+    private Permissions permissions;
 
     @Override
     public void onEnable() {
@@ -149,5 +149,11 @@ public class MCCasino extends JavaPlugin {
 
         return getServer().getPluginManager().getPlugin("Vault") != null;
 
+    }
+    
+    public Permissions getPermissions() {
+        
+        return permissions;
+        
     }
 }

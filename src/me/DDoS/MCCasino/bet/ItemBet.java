@@ -1,6 +1,7 @@
 package me.DDoS.MCCasino.bet;
 
 import me.DDoS.MCCasino.util.MCCUtil;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -52,16 +53,8 @@ public class ItemBet implements Bet {
     }
     
     @Override
-    public void giveReward(Player player) {
-
-        MCCUtil.tell(player, "You received " + getTotalItems() + " of item '" + wonItems[0].getType().toString().toLowerCase() + "'.");
-        player.getInventory().addItem(wonItems);
-        player.updateInventory(); 
+    public int getAmount() {
         
-    }
-    
-    private int getTotalItems() {
-
         int total = 0;
         
         for (ItemStack i : wonItems) {
@@ -71,6 +64,22 @@ public class ItemBet implements Bet {
         }
         
         return total;
+        
+    }
+    
+    @Override
+    public Material getMaterial() {
+        
+        return wonItems[0].getType();
+        
+    }
+    
+    @Override
+    public void giveReward(Player player) {
+
+        MCCUtil.tell(player, "You received " + getAmount() + " of item '" + wonItems[0].getType().toString().toLowerCase() + "'.");
+        player.getInventory().addItem(wonItems);
+        player.updateInventory(); 
         
     }
 }

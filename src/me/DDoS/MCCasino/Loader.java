@@ -21,6 +21,8 @@ import java.util.Set;
 
 import me.DDoS.MCCasino.bet.ItemBetProvider;
 import me.DDoS.MCCasino.bet.MoneyBetProvider;
+import me.DDoS.MCCasino.message.MessageProperty;
+import me.DDoS.MCCasino.message.MessageSender;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -36,19 +38,19 @@ public class Loader {
     private Map<String, List<SerializableLocation>> machines;
     private final MCCasino plugin;
     private final FileConfiguration config;
-    
+
     public Loader(MCCasino plugin, FileConfiguration config) {
-        
+
         this.plugin = plugin;
         this.config = config;
-        
+
     }
-    
+
     public Loader(MCCasino plugin) {
-        
+
         this.plugin = plugin;
         config = null;
-        
+
     }
 
     public void loadSlotMachines() {
@@ -63,17 +65,18 @@ public class Loader {
 
             MCCasino.log.info("[MCCasino] Couldn't load the config.");
             MCCasino.log.info("[MCCasino] Error: " + e.getMessage());
-            
+
         }
 
         Set<String> machineNames = config.getConfigurationSection("Machines").getKeys(false);
 
         for (String machineName : machineNames) {
 
-            List<Location> signs = getMachineSigns(machineName);
-            List<Reel> reels = loadReels(machineName);
-            List<Reward> rewards = loadRewards(machineName);
-            BetProvider betHandler = loadBetProvider(machineName);
+            final List<Location> signs = getMachineSigns(machineName);
+            final List<Reel> reels = loadReels(machineName);
+            final List<Reward> rewards = loadRewards(machineName);
+            final BetProvider betHandler = loadBetProvider(machineName);
+            final MessageSender msgSender = loadMessageSender(machineName);
 
             boolean active = true;
 
@@ -84,24 +87,24 @@ public class Loader {
             }
 
             MCCasino.log.info("[MCCasino] Loaded slot machine: " + machineName);
-            plugin.addMachine(machineName, new SlotMachine(signs, reels, rewards, betHandler, active, plugin));
+            plugin.addMachine(machineName, new SlotMachine(signs, reels, rewards, betHandler, msgSender, active, plugin));
 
         }
     }
 
     public List<Reel> loadReels(String machineName) {
 
-        int numOfReels = config.getConfigurationSection("Machines." + machineName + ".reels").getKeys(false).size();
-        List<Reel> reels = new ArrayList<Reel>();
+        final int numOfReels = config.getConfigurationSection("Machines." + machineName + ".reels").getKeys(false).size();
+        final List<Reel> reels = new ArrayList<Reel>();
 
         for (int i2 = 0; i2 < numOfReels; i2++) {
 
-            List<String> reelValues = config.getStringList("Machines." + machineName + ".reels." + (i2 + 1));
-            List<ReelValue> rvs = new ArrayList<ReelValue>();
+            final List<String> reelValues = config.getStringList("Machines." + machineName + ".reels." + (i2 + 1));
+            final List<ReelValue> rvs = new ArrayList<ReelValue>();
 
             for (String reelValue : reelValues) {
 
-                String[] values = reelValue.split("-");
+                final String[] values = reelValue.split("-");
                 rvs.add(new ReelValue(new ItemStack(Integer.parseInt(values[0]), 1), Integer.parseInt(values[1])));
 
             }
@@ -119,19 +122,19 @@ public class Loader {
 
     private List<Reward> loadRewards(String machineName) {
 
-        List<String> rewards = config.getStringList("Machines." + machineName + ".rewards");
-        List<Reward> rewardsList = new ArrayList<Reward>();
+        final List<String> rewards = config.getStringList("Machines." + machineName + ".rewards");
+        final List<Reward> rewardsList = new ArrayList<Reward>();
 
         for (String reward : rewards) {
 
-            String[] rewardSplitted = reward.split(":");
-            String[] resultsString = rewardSplitted[0].split(",");
-            int multiplier = Integer.parseInt(rewardSplitted[1]);
-            List<Integer> results = new ArrayList<Integer>();
+            final String[] rewardSplitted = reward.split(":");
+            final String[] resultsString = rewardSplitted[0].split(",");
+            final int multiplier = Integer.parseInt(rewardSplitted[1]);
+            final List<Integer> results = new ArrayList<Integer>();
 
             for (String resultString : resultsString) {
 
-                int ID = (resultString.equalsIgnoreCase("x")) ? -1 : Integer.parseInt(resultString);
+                final int ID = (resultString.equalsIgnoreCase("x")) ? -1 : Integer.parseInt(resultString);
                 results.add(ID);
 
             }
@@ -147,21 +150,21 @@ public class Loader {
     private BetProvider loadBetProvider(String machineName) {
 
         if (config.getBoolean("Machines." + machineName + ".economy.use_economy") && plugin.hasEconomy()) {
-            
+
             return new MoneyBetProvider(config.getInt("Machines." + machineName + ".economy.cost"),
                     plugin.getServer().getServicesManager().getRegistration(Economy.class).getProvider());
 
         } else {
 
-            List<ItemStack> limitedItems = new ArrayList<ItemStack>();
-            
+            final List<ItemStack> limitedItems = new ArrayList<ItemStack>();
+
             if (config.getBoolean("Machines." + machineName + ".bet_limits.enabled")) {
 
-                List<String> limits = config.getStringList("Machines." + machineName + ".bet_limits.allowed");
+                final List<String> limits = config.getStringList("Machines." + machineName + ".bet_limits.allowed");
 
                 for (String limit : limits) {
 
-                    String[] s1 = limit.split("-");
+                    final String[] s1 = limit.split("-");
                     limitedItems.add(new ItemStack(Integer.parseInt(s1[0]), Integer.parseInt(s1[1])));
 
                 }
@@ -172,14 +175,37 @@ public class Loader {
         }
     }
 
+    private MessageSender loadMessageSender(String machineName) {
+
+        final String msg = config.getString("Machines." + machineName + ".messaging.message");
+
+        MessageProperty msgProp = MessageProperty.CONSOLE_ONLY;
+
+        try {
+
+            msgProp = MessageProperty.valueOf(config.getString("Machines." + machineName + ".messaging.send_to").toUpperCase());
+
+        } catch (IllegalArgumentException iae) {
+
+            MCCasino.log.info("[MCCasino] Invalid value for 'messaging.send_to' for machine '" + machineName + "'.");
+
+        }
+
+        final boolean excludeWinner = config.getBoolean("Machines." + machineName + ".messaging.exclude_winner");
+        final int radius = config.getInt("Machines." + machineName + ".messaging.radius");
+
+        return new MessageSender(msg, msgProp, excludeWinner, radius);
+
+    }
+
     private void loadSlotMachinesFile() {
 
         checkSlotMachineFile();
 
         try {
 
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("plugins/MCCasino/slotMachines.dat"));
-            Object dispensersLoad = ois.readObject();
+            final ObjectInputStream ois = new ObjectInputStream(new FileInputStream("plugins/MCCasino/slotMachines.dat"));
+            final Object dispensersLoad = ois.readObject();
             machines = (HashMap<String, List<SerializableLocation>>) dispensersLoad;
 
         } catch (Exception e) {
@@ -193,7 +219,7 @@ public class Loader {
 
     private List<Location> getMachineSigns(String machineName) {
 
-        List<SerializableLocation> sLocs = machines.get(machineName);
+        final List<SerializableLocation> sLocs = machines.get(machineName);
 
         if (sLocs == null) {
 
@@ -201,11 +227,11 @@ public class Loader {
 
         }
 
-        List<Location> locs = new ArrayList<Location>();
+        final List<Location> locs = new ArrayList<Location>();
 
         for (SerializableLocation sLoc : sLocs) {
 
-            Location location = sLoc.getLocation(plugin.getServer());
+            final Location location = sLoc.getLocation(plugin.getServer());
             locs.add(location);
 
         }
@@ -216,7 +242,7 @@ public class Loader {
 
     private void checkSlotMachineFile() {
 
-        File dipensersFile = new File("plugins/MCCasino/slotMachines.dat");
+        final File dipensersFile = new File("plugins/MCCasino/slotMachines.dat");
 
         if (!dipensersFile.exists()) {
 
@@ -228,19 +254,19 @@ public class Loader {
 
                 MCCasino.log.info("[MCCasino] Couldn't create the slot machine file.");
                 MCCasino.log.info("[MCCasino] Error: " + e.getMessage());
-                
+
             }
         }
     }
 
     public void saveMachines() {
 
-        Map<String, List<SerializableLocation>> signs = new HashMap<String, List<SerializableLocation>>();
+        final Map<String, List<SerializableLocation>> signs = new HashMap<String, List<SerializableLocation>>();
 
         for (Entry<String, SlotMachine> entry : plugin.getMachineEntries()) {
 
-            List<Location> locs = entry.getValue().getReels();
-            List<SerializableLocation> fLocs = new ArrayList<SerializableLocation>();
+            final List<Location> locs = entry.getValue().getReels();
+            final List<SerializableLocation> fLocs = new ArrayList<SerializableLocation>();
 
             for (Location loc : locs) {
 
@@ -254,7 +280,7 @@ public class Loader {
 
         try {
 
-            ObjectOutputStream hashfile = new ObjectOutputStream(new FileOutputStream("plugins/MCCasino/slotMachines.dat"));
+            final ObjectOutputStream hashfile = new ObjectOutputStream(new FileOutputStream("plugins/MCCasino/slotMachines.dat"));
             hashfile.writeObject(signs);
             hashfile.flush();
             hashfile.close();

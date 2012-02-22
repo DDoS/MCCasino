@@ -2,6 +2,7 @@ package me.DDoS.MCCasino.bet;
 
 import me.DDoS.MCCasino.util.MCCUtil;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 /**
@@ -26,6 +27,20 @@ public class MoneyBet implements Bet {
         amount = (amount * multiplier) + amount;
         return;
 
+    }
+    
+    @Override
+    public int getAmount() {
+        
+        return amount;
+        
+    }
+    
+    @Override
+    public Material getMaterial() {
+        
+        return null;
+        
     }
 
     @Override

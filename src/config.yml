@@ -32,6 +32,11 @@ Machines:
       allowed:
       - 266-1
       - 264-1
+    messaging:
+      message: '$6$[MCCasino] $7$$name$ won $$amount$!'
+      send_to: players_nearby
+      exclude_winner: true
+      radius: 20
   machine2:
     reels:
       '1':
@@ -71,3 +76,9 @@ Machines:
       allowed:
       - 266-1
       - 264-1
+    messaging:
+      message: '$6$[MCCasino] $7$$name$ won $amount$ $item$(s)!'
+      send_to: world
+      exclude_winner: true
+      radius: 15
+      

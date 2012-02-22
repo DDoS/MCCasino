@@ -9,8 +9,10 @@ import me.DDoS.MCCasino.bet.BetProvider;
 import me.DDoS.MCCasino.util.DropCleaner;
 import me.DDoS.MCCasino.util.MCCUtil;
 import me.DDoS.MCCasino.MCCasino;
+import me.DDoS.MCCasino.message.MessageSender;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -28,16 +30,18 @@ public class SlotMachine {
     private final List<Reward> rewards;
     private final List<Item> itemsToRemove = new ArrayList<Item>();
     private final BetProvider betProvider;
+    private final MessageSender msgSender;
     private boolean active;
     private final MCCasino plugin;
 
     public SlotMachine(List<Location> reelLocations, List<Reel> reels, List<Reward> rewards, BetProvider betHandler,
-            boolean active, MCCasino plugin) {
+            MessageSender msgSender, boolean active, MCCasino plugin) {
 
         this.reels = reels;
         this.reelLocations = reelLocations;
         this.rewards = rewards;
         this.betProvider = betHandler;
+        this.msgSender = msgSender;
         this.active = active;
         this.plugin = plugin;
 
@@ -220,6 +224,7 @@ public class SlotMachine {
             if (multiplier > 0) {
 
                 MCCUtil.tell(player, "You won " + multiplier + " time(s) your bet.");
+                msgSender.sendAlert(player, 0, Material.AIR);
                 return;
 
             }
@@ -257,6 +262,7 @@ public class SlotMachine {
 
                 bet.applyMultiplier(multiplier);
                 MCCUtil.tell(player, "You won " + multiplier + " time(s) your bet.");
+                msgSender.sendAlert(player, bet.getAmount(), bet.getMaterial());
                 bet.giveReward(player);
                 return;
 

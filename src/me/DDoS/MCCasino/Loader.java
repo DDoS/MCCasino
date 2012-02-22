@@ -1,11 +1,11 @@
 package me.DDoS.MCCasino;
 
-import me.DDoS.MCCasino.util.MCCSerializableLocation;
-import me.DDoS.MCCasino.bet.MCCBetProvider;
-import me.DDoS.MCCasino.slotmachine.MCCReel;
-import me.DDoS.MCCasino.slotmachine.MCCReelValue;
-import me.DDoS.MCCasino.slotmachine.MCCReward;
-import me.DDoS.MCCasino.slotmachine.MCCSlotMachine;
+import me.DDoS.MCCasino.util.SerializableLocation;
+import me.DDoS.MCCasino.bet.BetProvider;
+import me.DDoS.MCCasino.slotmachine.Reel;
+import me.DDoS.MCCasino.slotmachine.ReelValue;
+import me.DDoS.MCCasino.slotmachine.Reward;
+import me.DDoS.MCCasino.slotmachine.SlotMachine;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -19,33 +19,32 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import me.DDoS.MCCasino.bet.MCCItemBetProvider;
-import me.DDoS.MCCasino.bet.MCCMoneyBetProvider;
+import me.DDoS.MCCasino.bet.ItemBetProvider;
+import me.DDoS.MCCasino.bet.MoneyBetProvider;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.RegisteredServiceProvider;
 
 /**
  *
  * @author DDoS
  */
 @SuppressWarnings("unchecked")
-public class MCCLoader {
+public class Loader {
 
-    private Map<String, List<MCCSerializableLocation>> machines;
+    private Map<String, List<SerializableLocation>> machines;
     private MCCasino plugin;
     private FileConfiguration config;
     
-    public MCCLoader(MCCasino plugin, FileConfiguration config) {
+    public Loader(MCCasino plugin, FileConfiguration config) {
         
         this.plugin = plugin;
         this.config = config;
         
     }
     
-    public MCCLoader(MCCasino plugin) {
+    public Loader(MCCasino plugin) {
         
         this.plugin = plugin;
         
@@ -71,9 +70,9 @@ public class MCCLoader {
         for (String machineName : machineNames) {
 
             List<Location> signs = getMachineSigns(machineName);
-            List<MCCReel> reels = loadReels(machineName);
-            List<MCCReward> rewards = loadRewards(machineName);
-            MCCBetProvider betHandler = loadBetProvider(machineName);
+            List<Reel> reels = loadReels(machineName);
+            List<Reward> rewards = loadRewards(machineName);
+            BetProvider betHandler = loadBetProvider(machineName);
 
             boolean active = true;
 
@@ -84,31 +83,31 @@ public class MCCLoader {
             }
 
             MCCasino.log.info("[MCCasino] Loaded slot machine: " + machineName);
-            plugin.addMachine(machineName, new MCCSlotMachine(signs, reels, rewards, betHandler, active, plugin));
+            plugin.addMachine(machineName, new SlotMachine(signs, reels, rewards, betHandler, active, plugin));
 
         }
     }
 
-    public List<MCCReel> loadReels(String machineName) {
+    public List<Reel> loadReels(String machineName) {
 
         int numOfReels = config.getConfigurationSection("Machines." + machineName + ".reels").getKeys(false).size();
-        List<MCCReel> reels = new ArrayList<MCCReel>();
+        List<Reel> reels = new ArrayList<Reel>();
 
         for (int i2 = 0; i2 < numOfReels; i2++) {
 
             List<String> reelValues = config.getStringList("Machines." + machineName + ".reels." + (i2 + 1));
-            List<MCCReelValue> rvs = new ArrayList<MCCReelValue>();
+            List<ReelValue> rvs = new ArrayList<ReelValue>();
 
             for (String reelValue : reelValues) {
 
                 String[] values = reelValue.split("-");
-                rvs.add(new MCCReelValue(new ItemStack(Integer.parseInt(values[0]), 1), Integer.parseInt(values[1])));
+                rvs.add(new ReelValue(new ItemStack(Integer.parseInt(values[0]), 1), Integer.parseInt(values[1])));
 
             }
 
             if (!rvs.isEmpty()) {
 
-                reels.add(new MCCReel(rvs));
+                reels.add(new Reel(rvs));
 
             }
         }
@@ -117,10 +116,10 @@ public class MCCLoader {
 
     }
 
-    private List<MCCReward> loadRewards(String machineName) {
+    private List<Reward> loadRewards(String machineName) {
 
         List<String> rewards = config.getStringList("Machines." + machineName + ".rewards");
-        List<MCCReward> rewardsList = new ArrayList<MCCReward>();
+        List<Reward> rewardsList = new ArrayList<Reward>();
 
         for (String reward : rewards) {
 
@@ -136,7 +135,7 @@ public class MCCLoader {
 
             }
 
-            rewardsList.add(new MCCReward(results, multiplier));
+            rewardsList.add(new Reward(results, multiplier));
 
         }
 
@@ -144,11 +143,11 @@ public class MCCLoader {
 
     }
 
-    private MCCBetProvider loadBetProvider(String machineName) {
+    private BetProvider loadBetProvider(String machineName) {
 
         if (config.getBoolean("Machines." + machineName + ".economy.use_economy") && plugin.hasEconomy()) {
             
-            return new MCCMoneyBetProvider(config.getInt("Machines." + machineName + ".economy.cost"),
+            return new MoneyBetProvider(config.getInt("Machines." + machineName + ".economy.cost"),
                     plugin.getServer().getServicesManager().getRegistration(Economy.class).getProvider());
 
         } else {
@@ -167,12 +166,12 @@ public class MCCLoader {
                 }
             }
 
-            return new MCCItemBetProvider(limitedItems);
+            return new ItemBetProvider(limitedItems);
 
         }
     }
 
-    public void loadSlotMachinesFile() {
+    private void loadSlotMachinesFile() {
 
         checkSlotMachineFile();
 
@@ -180,20 +179,20 @@ public class MCCLoader {
 
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream("plugins/MCCasino/slotMachines.dat"));
             Object dispensersLoad = ois.readObject();
-            machines = (HashMap<String, List<MCCSerializableLocation>>) dispensersLoad;
+            machines = (HashMap<String, List<SerializableLocation>>) dispensersLoad;
 
         } catch (Exception e) {
 
             MCCasino.log.info("[MCCasino] Couldn't load the slot machine file.");
             MCCasino.log.info("[MCCasino] Error: " + e.getMessage());
-            machines = new HashMap<String, List<MCCSerializableLocation>>();
+            machines = new HashMap<String, List<SerializableLocation>>();
 
         }
     }
 
     private List<Location> getMachineSigns(String machineName) {
 
-        List<MCCSerializableLocation> sLocs = machines.get(machineName);
+        List<SerializableLocation> sLocs = machines.get(machineName);
 
         if (sLocs == null) {
 
@@ -203,7 +202,7 @@ public class MCCLoader {
 
         List<Location> locs = new ArrayList<Location>();
 
-        for (MCCSerializableLocation sLoc : sLocs) {
+        for (SerializableLocation sLoc : sLocs) {
 
             Location location = sLoc.getLocation(plugin.getServer());
             locs.add(location);
@@ -214,7 +213,7 @@ public class MCCLoader {
 
     }
 
-    public void checkSlotMachineFile() {
+    private void checkSlotMachineFile() {
 
         File dipensersFile = new File("plugins/MCCasino/slotMachines.dat");
 
@@ -235,16 +234,16 @@ public class MCCLoader {
 
     public void saveMachines() {
 
-        Map<String, List<MCCSerializableLocation>> signs = new HashMap<String, List<MCCSerializableLocation>>();
+        Map<String, List<SerializableLocation>> signs = new HashMap<String, List<SerializableLocation>>();
 
-        for (Entry<String, MCCSlotMachine> entry : plugin.getMachineEntries()) {
+        for (Entry<String, SlotMachine> entry : plugin.getMachineEntries()) {
 
             List<Location> locs = entry.getValue().getReels();
-            List<MCCSerializableLocation> fLocs = new ArrayList<MCCSerializableLocation>();
+            List<SerializableLocation> fLocs = new ArrayList<SerializableLocation>();
 
             for (Location loc : locs) {
 
-                fLocs.add(new MCCSerializableLocation(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), loc.getWorld().getName()));
+                fLocs.add(new SerializableLocation(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), loc.getWorld().getName()));
 
             }
 

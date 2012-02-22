@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
  *
  * @author DDoS
  */
-public interface MCCBet {
+public interface Bet {
 
     public void applyMultiplier(int multiplier);
 

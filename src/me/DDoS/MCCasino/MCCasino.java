@@ -8,9 +8,9 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import me.DDoS.MCCasino.listener.MCCListener;
-import me.DDoS.MCCasino.permissions.MCCPermissions;
+import me.DDoS.MCCasino.permissions.Permission;
 import me.DDoS.MCCasino.util.MCCUtil;
-import me.DDoS.MCCasino.slotmachine.MCCSlotMachine;
+import me.DDoS.MCCasino.slotmachine.SlotMachine;
 import me.DDoS.MCCasino.permissions.Permissions;
 import me.DDoS.MCCasino.permissions.PermissionsHandler;
 import org.bukkit.ChatColor;
@@ -27,7 +27,7 @@ public class MCCasino extends JavaPlugin {
 
     public static final Logger log = Logger.getLogger("Minecraft");
     //
-    private final Map<String, MCCSlotMachine> machines = new HashMap<String, MCCSlotMachine>();
+    private final Map<String, SlotMachine> machines = new HashMap<String, SlotMachine>();
     //
     public static Permissions permissions;
 
@@ -37,7 +37,7 @@ public class MCCasino extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new MCCListener(this), this);
 
         permissions = new PermissionsHandler(this).getPermissions();
-        new MCCLoader(this, getConfig()).loadSlotMachines();
+        new Loader(this, getConfig()).loadSlotMachines();
 
         log.info("[MCCasino] Plugin enabled, v" + getDescription().getVersion() + ", by DDoS.");
 
@@ -46,13 +46,13 @@ public class MCCasino extends JavaPlugin {
     @Override
     public void onDisable() {
 
-        for (MCCSlotMachine slotMachine : machines.values()) {
+        for (SlotMachine slotMachine : machines.values()) {
 
             slotMachine.clearItems();
 
         }
 
-        new MCCLoader(this).saveMachines();
+        new Loader(this).saveMachines();
         log.info("[MCCasino] Plugin disabled, v" + getDescription().getVersion() + ", by DDoS.");
 
     }
@@ -69,7 +69,7 @@ public class MCCasino extends JavaPlugin {
 
         Player player = (Player) sender;
 
-        if (!permissions.hasPermission(player, MCCPermissions.SETUP.getPermissionString())) {
+        if (!permissions.hasPermission(player, Permission.SETUP.getPermissionString())) {
 
             player.sendMessage(ChatColor.RED + "You do not have permissions to use this command.");
             return true;
@@ -118,25 +118,25 @@ public class MCCasino extends JavaPlugin {
 
     }
 
-    public MCCSlotMachine getMachine(String name) {
+    public SlotMachine getMachine(String name) {
 
         return machines.get(name);
 
     }
 
-    public Set<Entry<String, MCCSlotMachine>> getMachineEntries() {
+    public Set<Entry<String, SlotMachine>> getMachineEntries() {
 
         return machines.entrySet();
 
     }
 
-    public Collection<MCCSlotMachine> getMachines() {
+    public Collection<SlotMachine> getMachines() {
 
         return machines.values();
 
     }
 
-    public void addMachine(String name, MCCSlotMachine machine) {
+    public void addMachine(String name, SlotMachine machine) {
 
         if (!machines.containsKey(name)) {
 

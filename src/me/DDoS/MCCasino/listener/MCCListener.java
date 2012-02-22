@@ -1,9 +1,9 @@
 package me.DDoS.MCCasino.listener;
 
 import me.DDoS.MCCasino.MCCasino;
-import me.DDoS.MCCasino.permissions.MCCPermissions;
+import me.DDoS.MCCasino.permissions.Permission;
 import me.DDoS.MCCasino.util.MCCUtil;
-import me.DDoS.MCCasino.slotmachine.MCCSlotMachine;
+import me.DDoS.MCCasino.slotmachine.SlotMachine;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
@@ -55,9 +55,9 @@ public class MCCListener implements Listener {
         event.setCancelled(true);
 
         if (sign.getLine(1).equalsIgnoreCase("Slot Machine")
-                && MCCasino.permissions.hasPermission(event.getPlayer(), MCCPermissions.USE.getPermissionString())) {
+                && MCCasino.permissions.hasPermission(event.getPlayer(), Permission.USE.getPermissionString())) {
 
-            MCCSlotMachine machine = plugin.getMachine(sign.getLine(2));
+            SlotMachine machine = plugin.getMachine(sign.getLine(2));
 
             if (machine != null) {
 
@@ -73,9 +73,9 @@ public class MCCListener implements Listener {
         }
 
         if (sign.getLine(1).equalsIgnoreCase("Reel")
-                && MCCasino.permissions.hasPermission(event.getPlayer(), MCCPermissions.SETUP.getPermissionString())) {
+                && MCCasino.permissions.hasPermission(event.getPlayer(), Permission.SETUP.getPermissionString())) {
 
-            MCCSlotMachine machine = plugin.getMachine(sign.getLine(2));
+            SlotMachine machine = plugin.getMachine(sign.getLine(2));
 
             if (machine == null) {
 
@@ -108,7 +108,7 @@ public class MCCListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerPickupItem(PlayerPickupItemEvent event) {
         
-        for (MCCSlotMachine machine : plugin.getMachines()) {
+        for (SlotMachine machine : plugin.getMachines()) {
 
             if (machine.hasItem(event.getItem())) {
                 
@@ -136,7 +136,7 @@ public class MCCListener implements Listener {
 
         }
 
-        MCCSlotMachine machine = plugin.getMachine(sign.getLine(2));
+        SlotMachine machine = plugin.getMachine(sign.getLine(2));
 
         if (machine == null) {
 
@@ -154,7 +154,7 @@ public class MCCListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onChunkUnload(ChunkUnloadEvent event) {
 
-        for (MCCSlotMachine machine : plugin.getMachines()) {
+        for (SlotMachine machine : plugin.getMachines()) {
 
             machine.passChunkUnload(event.getChunk());
 

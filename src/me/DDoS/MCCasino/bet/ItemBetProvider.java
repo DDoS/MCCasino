@@ -10,18 +10,18 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author DDoS
  */
-public class MCCItemBetProvider implements MCCBetProvider {
+public class ItemBetProvider implements BetProvider {
 
     private List<ItemStack> limits;
 
-    public MCCItemBetProvider(List<ItemStack> limits) {
+    public ItemBetProvider(List<ItemStack> limits) {
 
         this.limits = limits;
 
     }
 
     @Override
-    public MCCBet getBet(Player player) {
+    public Bet getBet(Player player) {
 
         ItemStack bet = player.getItemInHand();
 
@@ -42,7 +42,7 @@ public class MCCItemBetProvider implements MCCBetProvider {
         if (limits.isEmpty()) {
 
             player.getInventory().removeItem(bet);
-            return new MCCItemBet(bet);
+            return new ItemBet(bet);
 
         }
 
@@ -75,7 +75,7 @@ public class MCCItemBetProvider implements MCCBetProvider {
 
             player.getInventory().removeItem(limit);
             player.updateInventory();
-            return new MCCItemBet(limit);
+            return new ItemBet(limit);
 
         }
 

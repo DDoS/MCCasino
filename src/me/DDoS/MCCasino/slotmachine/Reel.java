@@ -9,11 +9,11 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author DDos
  */
-public class MCCReel {
+public class Reel {
     
-    private List<MCCReelValue> values;
+    private List<ReelValue> values;
     
-    public MCCReel(List<MCCReelValue> values) {
+    public Reel(List<ReelValue> values) {
         
         this.values = values;
         
@@ -24,7 +24,7 @@ public class MCCReel {
         final List<Integer> weightedNumbers = new ArrayList<Integer>();
         Random random = new Random();
         
-        for (MCCReelValue value : values) {
+        for (ReelValue value : values) {
             
             weightedNumbers.add((random.nextInt(49999) + 1) * value.getProb());
             

@@ -4,14 +4,14 @@ package me.DDoS.MCCasino.permissions;
  *
  * @author DDoS
  */
-public enum MCCPermissions {
+public enum Permission {
     
     USE("mccasino.use"), 
     SETUP("mccasino.setup");
 
     private String permString;
 
-    private MCCPermissions(String name) {
+    private Permission(String name) {
         
         this.permString = name;
     

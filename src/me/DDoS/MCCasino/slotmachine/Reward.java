@@ -6,12 +6,12 @@ import java.util.List;
  *
  * @author DDoS
  */
-public class MCCReward {
+public class Reward {
     
     private List<Integer> results;
     private int multiplier;
     
-    public MCCReward(List<Integer> results, int multiplier) {
+    public Reward(List<Integer> results, int multiplier) {
         
         this.results = results;
         this.multiplier = multiplier;

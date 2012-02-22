@@ -1,16 +1,16 @@
 package me.DDoS.MCCasino.util;
 
-import me.DDoS.MCCasino.slotmachine.MCCSlotMachine;
+import me.DDoS.MCCasino.slotmachine.SlotMachine;
 
 /**
  *
  * @author DDoS
  */
-public class MCCDropCleaner implements Runnable {
+public class DropCleaner implements Runnable {
 
-    private MCCSlotMachine slotMachine;
+    private SlotMachine slotMachine;
 
-    public MCCDropCleaner(MCCSlotMachine slotMachine) {
+    public DropCleaner(SlotMachine slotMachine) {
      
         this.slotMachine = slotMachine;
     

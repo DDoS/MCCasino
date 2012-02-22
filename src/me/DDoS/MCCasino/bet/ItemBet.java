@@ -9,12 +9,12 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author DDos
  */
-public class MCCItemBet implements MCCBet {
+public class ItemBet implements Bet {
     
     private ItemStack item;
     private ItemStack[] wonItems;
 
-    public MCCItemBet(ItemStack item) {
+    public ItemBet(ItemStack item) {
 
         this.item = item;
         

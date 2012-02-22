@@ -8,12 +8,12 @@ import org.bukkit.entity.Player;
  *
  * @author DDoS
  */
-public class MCCMoneyBet implements MCCBet {
+public class MoneyBet implements Bet {
 
     private int amount;
     private Economy economy;
 
-    public MCCMoneyBet(int amount, Economy economy) {
+    public MoneyBet(int amount, Economy economy) {
 
         this.amount = amount;
         this.economy = economy;

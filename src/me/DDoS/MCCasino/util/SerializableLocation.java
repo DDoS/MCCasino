@@ -10,7 +10,7 @@ import org.bukkit.World;
  *
  * @author DDoS
  */
-public class MCCSerializableLocation implements Serializable {
+public class SerializableLocation implements Serializable {
     
     private static final long serialVersionUID = -1330836964180902739L;
     //
@@ -19,7 +19,7 @@ public class MCCSerializableLocation implements Serializable {
     private double z;
     private String worldName;
     
-    public MCCSerializableLocation(double x, double y, double z, String worldName) {
+    public SerializableLocation(double x, double y, double z, String worldName) {
         
         this.x = x;
         this.y = y;

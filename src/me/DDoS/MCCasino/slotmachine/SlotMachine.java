@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import me.DDoS.MCCasino.bet.MCCBet;
-import me.DDoS.MCCasino.bet.MCCBetProvider;
-import me.DDoS.MCCasino.util.MCCDropCleaner;
+import me.DDoS.MCCasino.bet.Bet;
+import me.DDoS.MCCasino.bet.BetProvider;
+import me.DDoS.MCCasino.util.DropCleaner;
 import me.DDoS.MCCasino.util.MCCUtil;
 import me.DDoS.MCCasino.MCCasino;
 import org.bukkit.Chunk;
@@ -21,17 +21,17 @@ import org.bukkit.util.Vector;
  *
  * @author DDoS
  */
-public class MCCSlotMachine {
+public class SlotMachine {
 
-    private List<MCCReel> reels;
+    private List<Reel> reels;
     private List<Location> reelLocations;
-    private List<MCCReward> rewards;
+    private List<Reward> rewards;
     private final List<Item> itemsToRemove = new ArrayList<Item>();
-    private MCCBetProvider betProvider;
+    private BetProvider betProvider;
     private boolean active;
     private MCCasino plugin;
 
-    public MCCSlotMachine(List<Location> reelLocations, List<MCCReel> reels, List<MCCReward> rewards, MCCBetProvider betHandler,
+    public SlotMachine(List<Location> reelLocations, List<Reel> reels, List<Reward> rewards, BetProvider betHandler,
             boolean active, MCCasino plugin) {
 
         this.reels = reels;
@@ -175,7 +175,7 @@ public class MCCSlotMachine {
         int i = 0;
         List<Integer> results = new ArrayList<Integer>();
 
-        for (MCCReel reel : reels) {
+        for (Reel reel : reels) {
 
             Location loc1 = reelLocations.get(i);
             ItemStack item = reel.getRandomItem();
@@ -195,7 +195,7 @@ public class MCCSlotMachine {
 
         }
 
-        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new MCCDropCleaner(this), 100L);
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new DropCleaner(this), 100L);
 
         return results;
 
@@ -213,7 +213,7 @@ public class MCCSlotMachine {
         active = false;
         List<Integer> results = spinReels();
 
-        for (MCCReward reward : rewards) {
+        for (Reward reward : rewards) {
 
             int multiplier = reward.get(results);
 
@@ -238,7 +238,7 @@ public class MCCSlotMachine {
 
         }
 
-        MCCBet bet = betProvider.getBet(player);
+        Bet bet = betProvider.getBet(player);
 
         if (bet == null) {
 
@@ -249,7 +249,7 @@ public class MCCSlotMachine {
         active = false;
         List<Integer> results = spinReels();
 
-        for (MCCReward reward : rewards) {
+        for (Reward reward : rewards) {
 
             int multiplier = reward.get(results);
 

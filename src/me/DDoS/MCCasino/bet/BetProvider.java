@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
  *
  * @author DDoS
  */
-public interface MCCBetProvider {
+public interface BetProvider {
 
-    public MCCBet getBet(Player player);
+    public Bet getBet(Player player);
     
 }

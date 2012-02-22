@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
  */
 public class Reel {
     
-    private List<ReelValue> values;
+    private final List<ReelValue> values;
     
     public Reel(List<ReelValue> values) {
         

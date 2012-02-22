@@ -1,6 +1,5 @@
 package me.DDoS.MCCasino.bet;
 
-import me.DDoS.MCCasino.MCCasino;
 import me.DDoS.MCCasino.util.MCCUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -11,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
  */
 public class ItemBet implements Bet {
     
-    private ItemStack item;
+    private final ItemStack item;
     private ItemStack[] wonItems;
 
     public ItemBet(ItemStack item) {

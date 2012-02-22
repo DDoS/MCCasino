@@ -34,8 +34,8 @@ import org.bukkit.inventory.ItemStack;
 public class Loader {
 
     private Map<String, List<SerializableLocation>> machines;
-    private MCCasino plugin;
-    private FileConfiguration config;
+    private final MCCasino plugin;
+    private final FileConfiguration config;
     
     public Loader(MCCasino plugin, FileConfiguration config) {
         
@@ -47,6 +47,7 @@ public class Loader {
     public Loader(MCCasino plugin) {
         
         this.plugin = plugin;
+        config = null;
         
     }
 

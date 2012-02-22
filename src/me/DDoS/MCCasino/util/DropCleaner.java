@@ -8,7 +8,7 @@ import me.DDoS.MCCasino.slotmachine.SlotMachine;
  */
 public class DropCleaner implements Runnable {
 
-    private SlotMachine slotMachine;
+    private final SlotMachine slotMachine;
 
     public DropCleaner(SlotMachine slotMachine) {
      

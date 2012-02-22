@@ -21,7 +21,7 @@ import org.bukkit.event.world.ChunkUnloadEvent;
  */
 public class MCCListener implements Listener {
 
-    private MCCasino plugin;
+    private final MCCasino plugin;
 
     public MCCListener(MCCasino plugin) {
 

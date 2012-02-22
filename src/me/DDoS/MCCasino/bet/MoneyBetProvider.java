@@ -11,8 +11,8 @@ import org.bukkit.entity.Player;
  */
 public class MoneyBetProvider implements BetProvider {
 
-    private int cost;
-    private Economy economy;
+    private final int cost;
+    private final Economy economy;
 
     public MoneyBetProvider(int cost, Economy economy) {
 

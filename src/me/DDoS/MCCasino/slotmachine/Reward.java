@@ -8,8 +8,8 @@ import java.util.List;
  */
 public class Reward {
     
-    private List<Integer> results;
-    private int multiplier;
+    private final List<Integer> results;
+    private final int multiplier;
     
     public Reward(List<Integer> results, int multiplier) {
         

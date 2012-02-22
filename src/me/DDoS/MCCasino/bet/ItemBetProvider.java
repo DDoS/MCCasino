@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
  */
 public class ItemBetProvider implements BetProvider {
 
-    private List<ItemStack> limits;
+    private final List<ItemStack> limits;
 
     public ItemBetProvider(List<ItemStack> limits) {
 

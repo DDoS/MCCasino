@@ -9,7 +9,7 @@ public enum Permission {
     USE("mccasino.use"), 
     SETUP("mccasino.setup");
 
-    private String permString;
+    private final String permString;
 
     private Permission(String name) {
         

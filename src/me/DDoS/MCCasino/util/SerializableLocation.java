@@ -14,10 +14,10 @@ public class SerializableLocation implements Serializable {
     
     private static final long serialVersionUID = -1330836964180902739L;
     //
-    private double x;
-    private double y;
-    private double z;
-    private String worldName;
+    private final double x;
+    private final double y;
+    private final double z;
+    private final String worldName;
     
     public SerializableLocation(double x, double y, double z, String worldName) {
         

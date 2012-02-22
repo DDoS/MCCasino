@@ -23,13 +23,13 @@ import org.bukkit.util.Vector;
  */
 public class SlotMachine {
 
-    private List<Reel> reels;
+    private final List<Reel> reels;
     private List<Location> reelLocations;
-    private List<Reward> rewards;
+    private final List<Reward> rewards;
     private final List<Item> itemsToRemove = new ArrayList<Item>();
-    private BetProvider betProvider;
+    private final BetProvider betProvider;
     private boolean active;
-    private MCCasino plugin;
+    private final MCCasino plugin;
 
     public SlotMachine(List<Location> reelLocations, List<Reel> reels, List<Reward> rewards, BetProvider betHandler,
             boolean active, MCCasino plugin) {

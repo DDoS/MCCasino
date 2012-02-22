@@ -8,8 +8,8 @@ import org.bukkit.inventory.ItemStack;
  */
 public class ReelValue {
     
-    private ItemStack item;
-    private int probability;
+    private final ItemStack item;
+    private final int probability;
     
     public ReelValue(ItemStack item, int probability) {
         

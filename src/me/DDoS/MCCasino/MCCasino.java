@@ -76,7 +76,7 @@ public class MCCasino extends JavaPlugin {
 
         }
 
-        if (args.length != 1) {
+        if (args.length < 1) {
 
             return false;
 

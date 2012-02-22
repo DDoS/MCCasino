@@ -14,12 +14,12 @@ public class SerializableLocation implements Serializable {
     
     private static final long serialVersionUID = -1330836964180902739L;
     //
-    private final double x;
-    private final double y;
-    private final double z;
+    private final int x;
+    private final int y;
+    private final int z;
     private final String worldName;
     
-    public SerializableLocation(double x, double y, double z, String worldName) {
+    public SerializableLocation(int x, int y, int z, String worldName) {
         
         this.x = x;
         this.y = y;

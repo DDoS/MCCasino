@@ -1,7 +1,7 @@
 package me.DDoS.MCCasino.listener;
 
 import me.DDoS.MCCasino.MCCasino;
-import me.DDoS.MCCasino.permissions.Permission;
+import me.DDoS.MCCasino.permission.Permission;
 import me.DDoS.MCCasino.util.MCCUtil;
 import me.DDoS.MCCasino.slotmachine.SlotMachine;
 import org.bukkit.Material;

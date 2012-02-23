@@ -1,4 +1,4 @@
-package me.DDoS.MCCasino.permissions;
+package me.DDoS.MCCasino.permission;
 
 import java.io.File;
 import java.io.IOException;
@@ -144,42 +144,20 @@ public class PermissionsHandler {
 
         String type = config.getString("PermissionsSystem");
 
-        if (type.equals("Legacy")) {
+        if (type.equalsIgnoreCase("Legacy")) {
 
-            if (getLegacyPerms(plugin)) {
+            System.out.println("[" + plugin.getDescription().getName() + "] Legacy permissions are not supported anymore.");
+            getSuperPermsPerms(plugin);
 
-                System.out.println("[" + plugin.getDescription().getName() + "] Couldn't get Legacy permissions, will use SuperPerms");
-                getSuperPermsPerms(plugin);
-                return;
-
-            }
-
-        } else if (type.equals("PlayerAndOP")) {
+        } else if (type.equalsIgnoreCase("PlayerAndOP")) {
 
             getPlayerAndOPPerms(config, plugin);
-            return;
 
         } else {
 
             getSuperPermsPerms(plugin);
 
         }
-    }
-
-    private boolean getLegacyPerms(Plugin plugin) {
-
-        Plugin perms = plugin.getServer().getPluginManager().getPlugin("Permissions");
-
-        if (perms != null) {
-
-            permissions = new LegacyPermissions(((com.nijikokun.bukkit.Permissions.Permissions) perms).getHandler());
-            System.out.println("[" + plugin.getDescription().getName() + "] Got Legacy permissions.");
-            return true;
-
-        }
-
-        return false;
-
     }
 
     private void getSuperPermsPerms(Plugin plugin) {

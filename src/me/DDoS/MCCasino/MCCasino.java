@@ -8,11 +8,11 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import me.DDoS.MCCasino.listener.MCCListener;
-import me.DDoS.MCCasino.permissions.Permission;
+import me.DDoS.MCCasino.permission.Permission;
 import me.DDoS.MCCasino.util.MCCUtil;
 import me.DDoS.MCCasino.slotmachine.SlotMachine;
-import me.DDoS.MCCasino.permissions.Permissions;
-import me.DDoS.MCCasino.permissions.PermissionsHandler;
+import me.DDoS.MCCasino.permission.Permissions;
+import me.DDoS.MCCasino.permission.PermissionsHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

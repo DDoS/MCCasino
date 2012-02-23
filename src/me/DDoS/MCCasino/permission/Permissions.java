@@ -1,4 +1,4 @@
-package me.DDoS.MCCasino.permissions;
+package me.DDoS.MCCasino.permission;
 
 import org.bukkit.entity.Player;
 

@@ -69,7 +69,7 @@ public class MCCasino extends JavaPlugin {
 
         Player player = (Player) sender;
 
-        if (!permissions.hasPermission(player, Permission.SETUP.getPermissionString())) {
+        if (!permissions.hasPermission(player, Permission.SETUP.getNodeString())) {
 
             player.sendMessage(ChatColor.RED + "You do not have permissions to use this command.");
             return true;

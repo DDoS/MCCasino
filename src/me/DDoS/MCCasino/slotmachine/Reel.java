@@ -1,5 +1,6 @@
 package me.DDoS.MCCasino.slotmachine;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -11,6 +12,8 @@ import org.bukkit.inventory.ItemStack;
  */
 public class Reel {
     
+    private static final Random random = new SecureRandom();
+    //
     private final List<ReelValue> values;
     
     public Reel(List<ReelValue> values) {
@@ -22,11 +25,10 @@ public class Reel {
     public ItemStack getRandomItem() {
         
         final List<Integer> weightedNumbers = new ArrayList<Integer>();
-        Random random = new Random();
         
         for (ReelValue value : values) {
             
-            weightedNumbers.add((random.nextInt(49999) + 1) * value.getProb());
+            weightedNumbers.add((random.nextInt(50000 * value.getProb()) + 1));
             
         }
         

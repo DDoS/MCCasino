@@ -220,19 +220,27 @@ public class Loader {
     private List<Location> getMachineSigns(String machineName) {
 
         final List<SerializableLocation> sLocs = machines.get(machineName);
+        final List<Location> locs = new ArrayList<Location>();
 
         if (sLocs == null) {
 
-            return new ArrayList<Location>();
+            return locs;
 
         }
+        
+        try {
 
-        final List<Location> locs = new ArrayList<Location>();
+            for (SerializableLocation sLoc : sLocs) {
 
-        for (SerializableLocation sLoc : sLocs) {
+                final Location location = sLoc.getLocation();
+                locs.add(location);
 
-            final Location location = sLoc.getLocation(plugin.getServer());
-            locs.add(location);
+            }
+
+        } catch (ClassCastException cce) {
+
+            MCCasino.log.info("[MCCasino] You will need to re-register your slot "
+                    + "machine signs for machine: " + machineName + "'.");
 
         }
 

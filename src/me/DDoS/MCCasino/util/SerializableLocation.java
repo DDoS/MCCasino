@@ -2,8 +2,8 @@ package me.DDoS.MCCasino.util;
 
 import java.io.Serializable;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Server;
 import org.bukkit.World;
 
 /**
@@ -28,9 +28,9 @@ public class SerializableLocation implements Serializable {
     
     }
     
-    public Location getLocation(Server server) {
+    public Location getLocation() {
         
-        World world = server.getWorld(worldName);
+        World world = Bukkit.getWorld(worldName);
         
         if (world != null) {
             

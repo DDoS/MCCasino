@@ -31,9 +31,10 @@ public class Reel {
         }
         
         int i = 0;
+        final int rand = random.nextInt(totalWeights);
         for (ReelValue values : values) {
             i += value.getProb();
-            if (i < totalWeights)
+            if (rand < i)
                 return value.getItem();
         }        
     }

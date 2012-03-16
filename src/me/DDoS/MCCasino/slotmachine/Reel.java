@@ -23,33 +23,18 @@ public class Reel {
     }
     
     public ItemStack getRandomItem() {
-        
-        final List<Integer> weightedNumbers = new ArrayList<Integer>();
+        // CLEANED THIS FUNCTION & IMPROVED ODDS CALCULATION
+        int totalWeights = 0;
         
         for (ReelValue value : values) {
-            
-            weightedNumbers.add((random.nextInt(50000 * value.getProb()) + 1));
-            
+            totalWeights+= value.getProb();
         }
         
-        int highestNumber = Integer.MIN_VALUE;
-        int winnerPos = 0;
-        int i2 = 0;
-        
-        for (int weightedNumber : weightedNumbers) {
-            
-            if (weightedNumber > highestNumber) {
-                
-                highestNumber = weightedNumber;
-                winnerPos = i2;
-                
-            }
-            
-            i2++;
-            
-        }
-        
-        return values.get(winnerPos).getItem();
-        
+        int i = 0;
+        for (ReelValue values : values) {
+            i += value.getProb();
+            if (i < totalWeights)
+                return value.getItem();
+        }        
     }
 }

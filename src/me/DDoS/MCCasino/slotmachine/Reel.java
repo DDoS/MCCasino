@@ -126,7 +126,7 @@ public class Reel {
                 }
             }
 
-            System.out.println("Results:");
+            System.out.println("Results for " + repeats + " attempts:");
 
             for (Entry<Integer, Integer> entry : results.entrySet()) {
 
